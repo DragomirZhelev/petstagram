@@ -1,0 +1,81 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="pet-profile">
+
+        <!-- Start Pet Personal Data Section -->
+        <div class="profile">
+            <div class="profile-data">
+
+                <div class="profile_img">
+                    <div class="image">
+
+                        <!-- Pet URL Image -->
+                        <img src="{{ pet.pet_photo }}" alt="{{ pet.name }}">
+
+                    </div>
+                </div>
+
+                <div class="personal">
+
+                    <div class="edit">
+
+                        <!-- Pet Name -->
+                        <p>{{ pet.name }}</p>
+
+                        <!-- Edit/Delete only visible to Pet owner -->
+                        {% if request.user == pet.user %}
+
+                            <!-- Pet Edit Button -->
+                            <a href="{% url 'pets:edit' pet.user.pk pet.slug %}">
+                                <img class="edit-img"
+                                     src="{% static 'images/edit-pen-icon-6.jpg' %}"
+                                     alt="edit button">
+                            </a>
+
+                            <!-- Pet Delete Button -->
+                            <a href="{% url 'pets:delete' pet.user.pk pet.slug %}">
+                                <img class="bin-img"
+                                     src="{% static 'images/icon-remove-22.jpg' %}"
+                                     alt="bin button">
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                    <div class="data">
+
+                        <!-- Pet Total Photos -->
+                        <span>{{ pet.tagged_pets.count }}</span>
+                        <p>photos</p>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End Pet Personal Data Section -->
+
+
+        <div class="pet-posts">
+
+            {% if all_photos %}
+
+                {% include 'common/pet-posts.html' %}
+
+            {% else %}
+
+                <img class="no-posts"
+                     src="{% static 'images/no_posts.png' %}"
+                     alt="no posts image">
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}
